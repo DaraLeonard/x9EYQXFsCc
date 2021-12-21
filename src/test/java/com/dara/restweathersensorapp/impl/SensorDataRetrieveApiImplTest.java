@@ -3,10 +3,8 @@ package com.dara.restweathersensorapp.impl;
 import com.dara.restweathersensorapp.SensorRepository;
 import com.dara.restweathersensorapp.api.SensorDataRetrieveApi;
 import com.dara.restweathersensorapp.data.Sensor;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import com.dara.restweathersensorapp.exception.SensorNotFoundException;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -61,8 +59,11 @@ public class SensorDataRetrieveApiImplTest {
         }
 
         @Test
-        public void GIVEN_callForNonExistentSensor_WHEN_callExecuted_THEN_exceptionThrown() throws Exception {
-            SensorNotFoundException sensorDataRetrieveApi.getSensorById(1L).getContent();
+        public void GIVEN_callForNonExistentSensor_WHEN_callExecuted_THEN_exceptionThrown() {
+            final SensorNotFoundException sensorNotFoundException = Assertions.assertThrows(SensorNotFoundException.class,
+                    () -> sensorDataRetrieveApi.getSensorById(100L).getContent());
+
+            assertEquals("Sensor with ID:100 could not be found", sensorNotFoundException.getMessage());
         }
     }
 
