@@ -11,9 +11,10 @@
 - [X] Generate spring project from archetype
 - [X] Define API signature(s)
 - [X] Find some datastore & create object classes
-- [ ] Define API integration level test cases
-- [ ] Define unit level test cases
-- [ ] Add tools to maven build - code coverage, some kind of checkstyle plugin (PMD?)
+- [X] Define API integration level test cases
+- [X] Define unit level test cases
+- [X] Add tools to maven build - code coverage
+- [ ] Develop test classes
 - [ ] Develop object classes
 - [ ] Develop API implementation
 
@@ -21,6 +22,7 @@
 ###Nice to Have Elements
 - [ ] Full JavaDocs on all public methods
 - [ ] Some kind of official API documentation
+- [ ] some kind of checkstyle plugin (PMD?)
 
 ## References
 
