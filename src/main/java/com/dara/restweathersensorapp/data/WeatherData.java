@@ -1,4 +1,4 @@
-package com.dara.restweathersensorapp;
+package com.dara.restweathersensorapp.data;
 
 import javax.persistence.Embeddable;
 import java.time.LocalDateTime;
@@ -28,5 +28,4 @@ public class WeatherData {
     public WeatherData() {
 
     }
-
 }

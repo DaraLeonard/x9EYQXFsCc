@@ -1,9 +1,7 @@
 package integration;
 
 import com.dara.restweathersensorapp.api.SensorDataAddApi;
-import com.dara.restweathersensorapp.api.SensorDataRetrieveApi;
 import com.dara.restweathersensorapp.impl.SensorDataAddApiImpl;
-import com.dara.restweathersensorapp.impl.SensorDataRetrieveApiImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

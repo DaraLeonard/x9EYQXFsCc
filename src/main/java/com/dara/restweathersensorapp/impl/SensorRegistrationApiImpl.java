@@ -1,7 +1,7 @@
 package com.dara.restweathersensorapp.impl;
 
 
-import com.dara.restweathersensorapp.Sensor;
+import com.dara.restweathersensorapp.data.Sensor;
 import com.dara.restweathersensorapp.api.SensorRegistrationApi;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

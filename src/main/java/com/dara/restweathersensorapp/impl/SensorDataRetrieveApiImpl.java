@@ -1,7 +1,7 @@
 package com.dara.restweathersensorapp.impl;
 
 
-import com.dara.restweathersensorapp.Sensor;
+import com.dara.restweathersensorapp.data.Sensor;
 import com.dara.restweathersensorapp.api.SensorDataRetrieveApi;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;

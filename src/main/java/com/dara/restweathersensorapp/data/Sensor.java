@@ -1,4 +1,4 @@
-package com.dara.restweathersensorapp;
+package com.dara.restweathersensorapp.data;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
