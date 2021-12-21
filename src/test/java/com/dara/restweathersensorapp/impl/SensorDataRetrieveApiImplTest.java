@@ -20,13 +20,17 @@ public class SensorDataRetrieveApiImplTest {
     @Autowired
     SensorRepository sensorRepository;
 
+    private SensorDataRetrieveApi sensorDataRetrieveApi;
+
     @BeforeEach
     void setup() {
+        sensorDataRetrieveApi = new SensorDataRetrieveApiImpl(sensorRepository);
+
         final Sensor.SensorBuilder sb = new Sensor.SensorBuilder();
-        final Sensor sensorA = sb.sensorId(1L).country("IE").city("Mayo").weatherMetricName("humidity").timeOfReading(LocalDateTime.MIN).valueOfReading(90D).build();
-        final Sensor sensorB = sb.sensorId(2L).country("IE").city("Galway").weatherMetricName("temperature").timeOfReading(LocalDateTime.MIN).valueOfReading(33.1).build();
-        final Sensor sensorC = sb.sensorId(3L).country("IE").city("Cork").weatherMetricName("humidity").timeOfReading(LocalDateTime.MIN).valueOfReading(60D).build();
-        final Sensor sensorD = sb.sensorId(4L).country("IE").city("Dublin").weatherMetricName("wind-speed").timeOfReading(LocalDateTime.MIN).valueOfReading(33.1).build();
+        Sensor sensorA = sb.sensorId(1L).country("IE").city("Mayo").weatherMetricName("humidity").timeOfReading(LocalDateTime.MIN).valueOfReading(90D).build();
+        Sensor sensorB = sb.sensorId(2L).country("IE").city("Galway").weatherMetricName("temperature").timeOfReading(LocalDateTime.MIN).valueOfReading(33.1).build();
+        Sensor sensorC = sb.sensorId(3L).country("IE").city("Cork").weatherMetricName("humidity").timeOfReading(LocalDateTime.MIN).valueOfReading(60D).build();
+        Sensor sensorD = sb.sensorId(4L).country("IE").city("Dublin").weatherMetricName("wind-speed").timeOfReading(LocalDateTime.MIN).valueOfReading(33.1).build();
 
         sensorRepository.save(sensorA);
         sensorRepository.save(sensorB);
@@ -38,9 +42,7 @@ public class SensorDataRetrieveApiImplTest {
     @DisplayName("getAllSensors")
     class GetAllSensorsTest {
         @Test
-        public void GIVEN_callToGetAllSensors_WHEN_callExecuted_THEN_allRegisteredSensorsReturned() throws Exception {
-            SensorDataRetrieveApi sensorDataRetrieveApi = new SensorDataRetrieveApiImpl(sensorRepository);
-
+        public void GIVEN_callToGetAllSensors_WHEN_callExecuted_THEN_allRegisteredSensorsReturned() {
             assertEquals(4, sensorDataRetrieveApi.getAllSensors().getContent().size());
         }
     }
@@ -49,13 +51,18 @@ public class SensorDataRetrieveApiImplTest {
     @DisplayName("getSensorById")
     class GetSpecificSensorTest {
         @Test
-        public void GIVEN_callForValidSensor_WHEN_callExecuted_THEN_correctSensorReturned() throws Exception {
-
+        public void GIVEN_callForValidSensor_WHEN_callExecuted_THEN_correctSensorReturned() {
+            final Sensor sensor = sensorDataRetrieveApi.getSensorById(1L).getContent();
+            assertEquals(1L, sensor.getSensorId());
+            assertEquals("IE", sensor.getCountry());
+            assertEquals("Mayo", sensor.getCity());
+            assertEquals(LocalDateTime.MIN, sensor.getWeatherData().get("humidity").getTimeOfReading());
+            assertEquals(90D, sensor.getWeatherData().get("humidity").getWeatherData());
         }
 
         @Test
         public void GIVEN_callForNonExistentSensor_WHEN_callExecuted_THEN_exceptionThrown() throws Exception {
-
+            SensorNotFoundException sensorDataRetrieveApi.getSensorById(1L).getContent();
         }
     }
 

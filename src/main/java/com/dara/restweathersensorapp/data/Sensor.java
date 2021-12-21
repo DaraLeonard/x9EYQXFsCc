@@ -50,6 +50,18 @@ public class Sensor {
         this.sensorId = sensorId;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public Map<String, WeatherData> getWeatherData() {
+        return weatherData;
+    }
+
     @Override
     public String toString() {
         return "Sensor{" +
