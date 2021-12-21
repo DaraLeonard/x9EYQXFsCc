@@ -10,7 +10,7 @@
 ###Essential Elements
 - [X] Generate spring project from archetype
 - [X] Define API signature(s)
-- [ ] Find some datastore & create object classes
+- [X] Find some datastore & create object classes
 - [ ] Define API integration level test cases
 - [ ] Define unit level test cases
 - [ ] Add tools to maven build - code coverage, some kind of checkstyle plugin (PMD?)

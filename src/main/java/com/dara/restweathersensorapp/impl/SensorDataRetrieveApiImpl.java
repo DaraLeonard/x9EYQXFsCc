@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-public class SensorDataRetrieverApiImpl implements SensorDataRetrieveApi {
+public class SensorDataRetrieveApiImpl implements SensorDataRetrieveApi {
 
-    public SensorDataRetrieverApiImpl() {
+    public SensorDataRetrieveApiImpl() {
     }
 
     @Override
