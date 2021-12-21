@@ -1,5 +1,6 @@
 package com.dara.restweathersensorapp.api;
 
+import com.dara.restweathersensorapp.Sensor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

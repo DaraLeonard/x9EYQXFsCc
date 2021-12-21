@@ -9,7 +9,7 @@
 ## Project To-Do List
 ###Essential Elements
 - [X] Generate spring project from archetype
-- [ ] Define API signature(s)
+- [X] Define API signature(s)
 - [ ] Find some datastore & create object classes
 - [ ] Define API integration level test cases
 - [ ] Define unit level test cases

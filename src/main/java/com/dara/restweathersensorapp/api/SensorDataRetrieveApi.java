@@ -1,6 +1,6 @@
 package com.dara.restweathersensorapp.api;
 
-import com.dara.restweatherapp.Sensor;
+import com.dara.restweathersensorapp.Sensor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.GetMapping;
