@@ -9,6 +9,10 @@ public class WeatherData {
     private LocalDateTime timeOfReading;
     private Double weatherData;
 
+    public WeatherData() {
+
+    }
+
     public LocalDateTime getTimeOfReading() {
         return timeOfReading;
     }
@@ -25,7 +29,11 @@ public class WeatherData {
         this.weatherData = weatherData;
     }
 
-    public WeatherData() {
-
+    @Override
+    public String toString() {
+        return "WeatherData{" +
+                "timeOfReading=" + timeOfReading +
+                ", weatherData=" + weatherData +
+                '}';
     }
 }
