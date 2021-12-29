@@ -53,8 +53,16 @@ public class SensorRegistrationApiImplTest {
     @DisplayName("replaceSensor")
     class ReplacementSensorEndpointTest {
         @Test
-        public void GIVEN_callWithValidData_WHEN_replaceSensorCalled_THEN_sensorReplacementSuccessful() throws Exception {
+        public void GIVEN_callWithValidData_WHEN_replaceSensorCalled_THEN_sensorReplacementSuccessful() {
+            final Sensor sensor = sb.sensorId(1L).country("IE").city("Mayo").build();
+            sensorRegistrationApi.addSensor(sensor);
 
+            final Sensor replacementSensor = sb.sensorId(1L).country("IE").city("Dublin").build();
+            sensorRegistrationApi.replaceSensor(1L, replacementSensor);
+
+            assertEquals(1, sensorRepository.findAll().size());
+            assertEquals("IE", sensorRepository.findById(1L).get().getCountry());
+            assertEquals("Dublin", sensorRepository.findById(1L).get().getCity());
         }
 
         @Test
