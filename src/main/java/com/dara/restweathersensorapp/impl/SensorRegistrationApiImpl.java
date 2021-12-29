@@ -5,6 +5,7 @@ import com.dara.restweathersensorapp.SensorRepository;
 import com.dara.restweathersensorapp.api.SensorRegistrationApi;
 import com.dara.restweathersensorapp.data.Sensor;
 import com.dara.restweathersensorapp.exception.DuplicateSensorException;
+import com.dara.restweathersensorapp.exception.SensorNotFoundException;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,18 @@ public class SensorRegistrationApiImpl implements SensorRegistrationApi {
 
     @Override
     public ResponseEntity<?> replaceSensor(@PathVariable Long oldSensorId, @RequestBody Sensor newSensor) {
-        return null;
+        if(sensorRepository.findById(oldSensorId).isEmpty()) {
+            throw new SensorNotFoundException(oldSensorId);
+        }
+
+        newSensor.setSensorId(oldSensorId);
+        EntityModel<Sensor> entityModel = EntityModel.of(sensorRepository.save(newSensor
+                ), linkTo(methodOn(SensorDataRetrieveApiImpl.class).getSensorById(newSensor.getSensorId())).withSelfRel(),
+                linkTo(methodOn(SensorDataRetrieveApiImpl.class).getAllSensors()).withRel("sensors"));
+
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     @Override
