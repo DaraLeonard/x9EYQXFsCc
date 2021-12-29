@@ -46,7 +46,8 @@ public class SensorRegistrationApiImplTest {
             final Sensor sensorWithDuplicateId = sb.sensorId(1L).country("IE").city("Dublin").build();
             final DuplicateSensorException duplicateSensorException = Assertions.assertThrows(DuplicateSensorException.class,
                     () -> sensorRegistrationApi.addSensor(sensorWithDuplicateId));
-            assertEquals("Sensor with ID:1 already exists. To replace an already existing sensor please use \"replaceSensor\" method", duplicateSensorException.getMessage());
+            assertEquals("Sensor with ID:1 already exists. To replace an already existing sensor please use \"replaceSensor\" method",
+                    duplicateSensorException.getMessage());
         }
     }
 
@@ -80,13 +81,22 @@ public class SensorRegistrationApiImplTest {
     @DisplayName("deleteSensor")
     class DeleteSensorEndpointTest {
         @Test
-        public void GIVEN_callWithValidData_WHEN_deleteSensorCalled_THEN_sensorDeleted() throws Exception {
+        public void GIVEN_callWithValidData_WHEN_deleteSensorCalled_THEN_sensorDeleted() {
+            final Sensor sensor = sb.sensorId(1L).country("IE").city("Mayo").build();
+            sensorRegistrationApi.addSensor(sensor);
 
+            assertEquals(1, sensorRepository.findAll().size());
+
+            sensorRegistrationApi.deleteSensor(1L);
+
+            assertEquals(0, sensorRepository.findAll().size());
         }
 
         @Test
-        public void GIVEN_attemptToDeleteNonExistentSensor_WHEN_deleteSensorCalled_THEN_exceptionThrown() throws Exception {
-
+        public void GIVEN_attemptToDeleteNonExistentSensor_WHEN_deleteSensorCalled_THEN_exceptionThrown() {
+            final SensorNotFoundException sensorNotFoundException = Assertions.assertThrows(SensorNotFoundException.class,
+                    () -> sensorRegistrationApi.deleteSensor(1L));
+            assertEquals("Sensor with ID:1 could not be found", sensorNotFoundException.getMessage());
         }
     }
 }
