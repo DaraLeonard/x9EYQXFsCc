@@ -59,6 +59,12 @@ public class SensorRegistrationApiImpl implements SensorRegistrationApi {
 
     @Override
     public ResponseEntity<?> deleteSensor(@PathVariable Long sensorId) {
-        return null;
+        if(sensorRepository.findById(sensorId).isEmpty()) {
+            throw new SensorNotFoundException(sensorId);
+        }
+
+        sensorRepository.deleteById(sensorId);
+
+        return ResponseEntity.noContent().build();
     }
 }
