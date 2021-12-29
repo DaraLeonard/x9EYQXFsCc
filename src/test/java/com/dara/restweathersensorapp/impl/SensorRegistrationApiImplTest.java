@@ -3,6 +3,7 @@ package com.dara.restweathersensorapp.impl;
 import com.dara.restweathersensorapp.SensorRepository;
 import com.dara.restweathersensorapp.data.Sensor;
 import com.dara.restweathersensorapp.exception.DuplicateSensorException;
+import com.dara.restweathersensorapp.exception.SensorNotFoundException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -66,13 +67,12 @@ public class SensorRegistrationApiImplTest {
         }
 
         @Test
-        public void GIVEN_attemptToReplaceNonExistentSensor_WHEN_replaceSensorCalled_THEN_exceptionThrown() throws Exception {
+        public void GIVEN_attemptToReplaceNonExistentSensor_WHEN_replaceSensorCalled_THEN_exceptionThrown() {
+            final Sensor replacementSensor = sb.sensorId(1L).country("IE").city("Dublin").build();
 
-        }
-
-        @Test
-        public void GIVEN_callWithInvalidData_WHEN_replaceSensorCalled_THEN_exceptionThrown() throws Exception {
-
+            final SensorNotFoundException sensorNotFoundException = Assertions.assertThrows(SensorNotFoundException.class,
+                    () -> sensorRegistrationApi.replaceSensor(2L, replacementSensor));
+            assertEquals("Sensor with ID:2 could not be found", sensorNotFoundException.getMessage());
         }
     }
 
