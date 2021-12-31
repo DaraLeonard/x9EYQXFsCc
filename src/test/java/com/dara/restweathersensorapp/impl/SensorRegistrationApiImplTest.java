@@ -1,6 +1,7 @@
 package com.dara.restweathersensorapp.impl;
 
 import com.dara.restweathersensorapp.SensorRepository;
+import com.dara.restweathersensorapp.api.SensorRegistrationApi;
 import com.dara.restweathersensorapp.data.Sensor;
 import com.dara.restweathersensorapp.exception.DuplicateSensorException;
 import com.dara.restweathersensorapp.exception.SensorNotFoundException;
@@ -18,7 +19,7 @@ public class SensorRegistrationApiImplTest {
 
     private final Sensor.SensorBuilder sb = new Sensor.SensorBuilder();
 
-    private SensorRegistrationApiImpl sensorRegistrationApi;
+    private SensorRegistrationApi sensorRegistrationApi;
 
     @BeforeEach
     void setup() {

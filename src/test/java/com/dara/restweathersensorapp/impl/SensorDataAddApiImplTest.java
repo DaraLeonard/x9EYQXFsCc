@@ -3,12 +3,13 @@ package com.dara.restweathersensorapp.impl;
 import com.dara.restweathersensorapp.SensorRepository;
 import com.dara.restweathersensorapp.api.SensorDataAddApi;
 import com.dara.restweathersensorapp.data.Sensor;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import com.dara.restweathersensorapp.data.WeatherData;
+import com.dara.restweathersensorapp.exception.SensorNotFoundException;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,6 +26,9 @@ public class SensorDataAddApiImplTest {
     @BeforeEach
     void setup() {
         sensorDataAddApi = new SensorDataAddApiImpl(sensorRepository);
+
+        final Sensor sensor = sb.sensorId(1L).country("IE").city("Mayo").build();
+        sensorRepository.save(sensor);
     }
 
     @Nested
@@ -44,13 +48,30 @@ public class SensorDataAddApiImplTest {
         }
 
         @Test
-        public void GIVEN_addNewWeatherDataAttributeToExistentSensor_WHEN_methodCalled_THEN_dataIsAddedCorrectly() throws Exception {
+        public void GIVEN_addNewWeatherDataAttributeToExistentSensor_WHEN_methodCalled_THEN_dataIsAddedCorrectly() {
+            final Sensor sensor =
+                    sb.sensorId(1L).country("IE").city("Mayo").weatherData(new WeatherData(LocalDateTime.MIN, "humidity", 90D)).build();
+            sensorRepository.save(sensor);
 
+            sensorDataAddApi.addMetricValue(1L, "wind-speed", 55.5);
+
+            final Sensor retrievedSensor = sensorRepository.findById(1L).get();
+            assertEquals(2, retrievedSensor.getWeatherData().size());
+            assertEquals("humidity", retrievedSensor.getWeatherData().get(0).getWeatherMetricName());
+            assertEquals(90D, retrievedSensor.getWeatherData().get(0).getWeatherMetricValue());
+
+            assertEquals("wind-speed", retrievedSensor.getWeatherData().get(1).getWeatherMetricName());
+            assertEquals(55.5, retrievedSensor.getWeatherData().get(1).getWeatherMetricValue());
         }
 
         @Test
-        public void GIVEN_attemptToAddDataToNonExistentSensor_WHEN_methodCalled_THEN_requestFails() throws Exception {
+        public void GIVEN_attemptToAddDataToNonExistentSensor_WHEN_methodCalled_THEN_requestFails() {
+            final Sensor sensor = sb.sensorId(1L).country("IE").city("Mayo").build();
+            sensorRepository.save(sensor);
 
+            final SensorNotFoundException sensorNotFoundException = Assertions.assertThrows(SensorNotFoundException.class,
+                    () -> sensorDataAddApi.addMetricValue(2L, "humidity", 40D));
+            assertEquals("Sensor with ID:2 could not be found", sensorNotFoundException.getMessage());
         }
     }
 }
