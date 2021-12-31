@@ -26,9 +26,6 @@ public class SensorDataAddApiImplTest {
     @BeforeEach
     void setup() {
         sensorDataAddApi = new SensorDataAddApiImpl(sensorRepository);
-
-        final Sensor sensor = sb.sensorId(1L).country("IE").city("Mayo").build();
-        sensorRepository.save(sensor);
     }
 
     @Nested
@@ -50,7 +47,7 @@ public class SensorDataAddApiImplTest {
         @Test
         public void GIVEN_addNewWeatherDataAttributeToExistentSensor_WHEN_methodCalled_THEN_dataIsAddedCorrectly() {
             final Sensor sensor =
-                    sb.sensorId(1L).country("IE").city("Mayo").weatherData(new WeatherData(LocalDateTime.MIN, "humidity", 90D)).build();
+                    sb.sensorId(1L).country("IE").city("Mayo").addWeatherData(new WeatherData(LocalDateTime.MIN, "humidity", 90D)).build();
             sensorRepository.save(sensor);
 
             sensorDataAddApi.addMetricValue(1L, "wind-speed", 55.5);

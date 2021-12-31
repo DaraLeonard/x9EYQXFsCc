@@ -36,6 +36,14 @@ public class WeatherData {
         this.weatherMetricValue = weatherMetricValue;
     }
 
+    public LocalDateTime getWeatherMetricTime() {
+        return weatherMetricTime;
+    }
+
+    public void setWeatherMetricTime(LocalDateTime weatherMetricTime) {
+        this.weatherMetricTime = weatherMetricTime;
+    }
+
     @Override public String toString() {
         return "WeatherData{" +
                 "weatherMetricTime=" + weatherMetricTime +

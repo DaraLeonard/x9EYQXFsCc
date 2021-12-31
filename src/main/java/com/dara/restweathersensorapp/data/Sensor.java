@@ -32,12 +32,7 @@ public class Sensor {
         this.sensorId = sensorBuilder.sensorId;
         this.city = sensorBuilder.city;
         this.country = sensorBuilder.country;
-
-        if (weatherData == null) {
-            this.weatherData = new ArrayList<>();
-        } else {
-            this.weatherData = sensorBuilder.weatherData;
-        }
+        this.weatherData = sensorBuilder.weatherData;
     }
 
     public Long getSensorId() {
@@ -75,7 +70,7 @@ public class Sensor {
         private Long sensorId;
         private String city;
         private String country;
-        private List<WeatherData> weatherData;
+        private List<WeatherData> weatherData = new ArrayList<>();
 
         public SensorBuilder() {
         }
@@ -95,8 +90,13 @@ public class Sensor {
             return SensorBuilder.this;
         }
 
-        public SensorBuilder weatherData(final WeatherData... weatherData) {
-            this.weatherData = List.of(weatherData);
+        public SensorBuilder weatherData(final List<WeatherData> weatherData){
+            this.weatherData = weatherData;
+            return SensorBuilder.this;
+        }
+
+        public SensorBuilder addWeatherData(final WeatherData weatherData){
+            this.weatherData.add(weatherData);
             return SensorBuilder.this;
         }
 
