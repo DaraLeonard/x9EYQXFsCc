@@ -3,9 +3,8 @@ package com.dara.restweathersensorapp.data;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Sensor {
@@ -16,7 +15,7 @@ public class Sensor {
     private String city;
 
     @ElementCollection
-    private Map<String, WeatherData> weatherData;
+    private List<WeatherData> weatherData;
 
     public Sensor() {
 
@@ -26,8 +25,7 @@ public class Sensor {
         this.sensorId = sensorId;
         this.country = country;
         this.city = city;
-
-        weatherData = new HashMap<>();
+        weatherData = new ArrayList<>();
     }
 
     public Sensor(final SensorBuilder sensorBuilder) {
@@ -35,11 +33,11 @@ public class Sensor {
         this.city = sensorBuilder.city;
         this.country = sensorBuilder.country;
 
-        final WeatherData weatherData = new WeatherData();
-        weatherData.setTimeOfReading(sensorBuilder.timeOfReading);
-        weatherData.setWeatherData(sensorBuilder.valueOfReading);
-
-        this.weatherData = Map.of(sensorBuilder.weatherMetricName, weatherData);
+        if (weatherData == null) {
+            this.weatherData = new ArrayList<>();
+        } else {
+            this.weatherData = sensorBuilder.weatherData;
+        }
     }
 
     public Long getSensorId() {
@@ -58,7 +56,7 @@ public class Sensor {
         return city;
     }
 
-    public Map<String, WeatherData> getWeatherData() {
+    public List<WeatherData> getWeatherData() {
         return weatherData;
     }
 
@@ -77,52 +75,43 @@ public class Sensor {
         private Long sensorId;
         private String city;
         private String country;
-        private String weatherMetricName;
-        private LocalDateTime timeOfReading;
-        private Double valueOfReading;
+        private List<WeatherData> weatherData;
 
         public SensorBuilder() {
         }
 
-        public SensorBuilder sensorId(Long sensorId) {
+        public SensorBuilder sensorId(final Long sensorId) {
             this.sensorId = sensorId;
             return SensorBuilder.this;
         }
 
-        public SensorBuilder city(String city) {
+        public SensorBuilder city(final String city) {
             this.city = city;
             return SensorBuilder.this;
         }
 
-        public SensorBuilder country(String country) {
+        public SensorBuilder country(final String country) {
             this.country = country;
             return SensorBuilder.this;
         }
 
-        public SensorBuilder weatherMetricName(String weatherMetricName) {
-            this.weatherMetricName = weatherMetricName;
-            return SensorBuilder.this;
-        }
-
-        public SensorBuilder timeOfReading(LocalDateTime timeOfReading) {
-            this.timeOfReading = timeOfReading;
-            return SensorBuilder.this;
-        }
-
-        public SensorBuilder valueOfReading(Double valueOfReading) {
-            this.valueOfReading = valueOfReading;
+        public SensorBuilder weatherData(final WeatherData... weatherData) {
+            this.weatherData = List.of(weatherData);
             return SensorBuilder.this;
         }
 
         public Sensor build() {
             if (this.sensorId == null) {
-                throw new NullPointerException("The property \"sensorId\" is null. The properties \"sensorId\", \"city\" and \"country\" are required.");
+                throw new NullPointerException(
+                        "The property \"sensorId\" is null. The properties \"sensorId\", \"city\" and \"country\" are required.");
             }
             if (this.city == null) {
-                throw new NullPointerException("The property \"city\" is null. The properties \"sensorId\", \"city\" and \"country\" are required.");
+                throw new NullPointerException(
+                        "The property \"city\" is null. The properties \"sensorId\", \"city\" and \"country\" are required.");
             }
             if (this.country == null) {
-                throw new NullPointerException("The property \"country\" is null. The properties \"sensorId\", \"city\" and \"country\" are required.");
+                throw new NullPointerException(
+                        "The property \"country\" is null. The properties \"sensorId\", \"city\" and \"country\" are required.");
             }
 
             return new Sensor(this);

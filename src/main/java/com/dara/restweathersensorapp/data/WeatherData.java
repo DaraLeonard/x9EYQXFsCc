@@ -6,34 +6,41 @@ import java.time.LocalDateTime;
 @Embeddable
 public class WeatherData {
 
-    private LocalDateTime timeOfReading;
-    private Double weatherData;
+    private LocalDateTime weatherMetricTime;
+    private String weatherMetricName;
+    private Double weatherMetricValue;
 
     public WeatherData() {
 
     }
 
-    public LocalDateTime getTimeOfReading() {
-        return timeOfReading;
+    public WeatherData(final LocalDateTime weatherMetricTime, final String weatherMetricName, final Double weatherMetricValue) {
+        this.weatherMetricTime = weatherMetricTime;
+        this.weatherMetricName = weatherMetricName;
+        this.weatherMetricValue = weatherMetricValue;
     }
 
-    public void setTimeOfReading(LocalDateTime timeOfReading) {
-        this.timeOfReading = timeOfReading;
+    public String getWeatherMetricName() {
+        return weatherMetricName;
     }
 
-    public Double getWeatherData() {
-        return weatherData;
+    public void setWeatherMetricName(final String weatherMetricName) {
+        this.weatherMetricName = weatherMetricName;
     }
 
-    public void setWeatherData(Double weatherData) {
-        this.weatherData = weatherData;
+    public Double getWeatherMetricValue() {
+        return weatherMetricValue;
     }
 
-    @Override
-    public String toString() {
+    public void setWeatherMetricValue(final Double weatherMetricValue) {
+        this.weatherMetricValue = weatherMetricValue;
+    }
+
+    @Override public String toString() {
         return "WeatherData{" +
-                "timeOfReading=" + timeOfReading +
-                ", weatherData=" + weatherData +
+                "weatherMetricTime=" + weatherMetricTime +
+                ", weatherMetricName='" + weatherMetricName + '\'' +
+                ", weatherMetricValue=" + weatherMetricValue +
                 '}';
     }
 }
