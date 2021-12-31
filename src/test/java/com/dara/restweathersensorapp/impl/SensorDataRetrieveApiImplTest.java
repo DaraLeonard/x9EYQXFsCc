@@ -84,7 +84,7 @@ public class SensorDataRetrieveApiImplTest {
     class GetSensorDataTest {
 
         @Test
-        public void GIVEN_callForAllSensors_WHEN_callExecuted_THEN_allSensorsReturned() {
+        public void GIVEN_callForAllSensors_WHEN_callExecuted_THEN_allDataReturned() {
             final Sensor sensorNY =
                     sb.sensorId(12L).country("US").city("NY").weatherData(List.of(new WeatherData(LocalDateTime.now(), "wind-speed", 23.1)))
                             .build();
@@ -110,7 +110,7 @@ public class SensorDataRetrieveApiImplTest {
         }
 
         @Test
-        public void GIVEN_callForMultipleSensors_WHEN_callExecuted_THEN_specifiedSensorsReturned() {
+        public void GIVEN_callForMultipleSensors_WHEN_callExecuted_THEN_specifiedDataReturned() {
             final Sensor sensorNY =
                     sb.sensorId(12L).country("US").city("NY").weatherData(List.of(new WeatherData(LocalDateTime.now(), "wind-speed", 23.1)))
                             .build();
@@ -136,7 +136,7 @@ public class SensorDataRetrieveApiImplTest {
         }
 
         @Test
-        public void GIVEN_callForSingleSensor_WHEN_callExecuted_THEN_correctSensorReturned() {
+        public void GIVEN_callForSingleSensor_WHEN_callExecuted_THEN_correctDataReturned() {
             final Sensor sensorNY =
                     sb.sensorId(12L).country("US").city("NY").weatherData(List.of(new WeatherData(LocalDateTime.now(), "wind-speed", 23.1)))
                             .build();
@@ -174,29 +174,28 @@ public class SensorDataRetrieveApiImplTest {
         }
 
         @Test
-        public void GIVEN_callWithDateRange_WHEN_callExecuted_THEN_averageDataForRangeReturned() {
-
-        }
-
-        @Test
         public void GIVEN_callWithSpecificWeatherAttribute_WHEN_callExecuted_THEN_requestedWeatherMetricsReturned() {
+            final Sensor sensorNY =
+                    sb.sensorId(12L).country("US").city("NY").weatherData(List.of(new WeatherData(LocalDateTime.now(), "wind-speed", 23.1)))
+                            .build();
+            final Sensor sensorNJ =
+                    sb.sensorId(13L).country("US").city("NJ").weatherData(List.of(new WeatherData(LocalDateTime.now(), "humidity", 60D),
+                            new WeatherData(LocalDateTime.now(), "humidity", 61D),
+                            new WeatherData(LocalDateTime.now(), "humidity", 62D),
+                            new WeatherData(LocalDateTime.now(), "humidity", 63D),
+                            new WeatherData(LocalDateTime.now(), "wind-speed", 25.1)
+                    )).build();
 
-        }
+            sensorRepository.save(sensorNY);
+            sensorRepository.save(sensorNJ);
 
-        @Test
-        public void GIVEN_callWithNoWeatherAttribute_WHEN_callExecuted_THEN_allWeatherMetricsReturned() {
-//            Sensor sensorNY = sb.sensorId(12L).country("US").city("NY").weatherMetricName("wind-speed").timeOfReading(LocalDateTime.now()).weatherMetricValue(23.1).build();
-//            Sensor sensorNJ = sb.sensorId(13L).country("US").city("NJ").weatherMetricName("humidity").timeOfReading(LocalDateTime.now()).weatherMetricValue(60D).build();
-//
-//            //final WeatherData oldHumidity = new WeatherData("humidity", 44.4);
-//            final Map<LocalDateTime, WeatherData> weatherData = sensorNJ.getWeatherData();
-//            weatherData.put(LocalDateTime.MIN, new WeatherData("humidity", 44.4));
-//            sensorNJ.setWeatherData(weatherData);
-//            sensorRepository.save(sensorNY);
-//            sensorRepository.save(sensorNJ);
-//
-//
-//            final EntityModel<JSONObject> sensorData = sensorDataRetrieveApi.getSensorData("*","*");
+
+            final JSONObject sensorData = sensorDataRetrieveApi.getSensorData("12,13", 5, "wind-speed");
+
+            assertEquals(2, sensorData.length());
+
+            assertEquals("23.1", sensorData.get("12-wind-speed"));
+            assertEquals("25.1", sensorData.get("13-wind-speed"));
         }
     }
 }
