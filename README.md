@@ -14,15 +14,12 @@
 - [X] Define API integration level test cases
 - [X] Define unit level test cases
 - [X] Add tools to maven build - code coverage
-- [ ] Develop test classes
-- [ ] Develop object classes
-- [ ] Develop API implementation
+- [X] Develop test classes (no integration tests, may be coming later)
+- [X] Develop object classes
+- [X] Develop API implementation
 
 
 ###Nice to Have Elements
-- [ ] Full JavaDocs on all public methods
+- [X] Full JavaDocs on all public methods
 - [ ] Some kind of official API documentation
 - [ ] some kind of checkstyle plugin (PMD?)
-
-## References
-
