@@ -11,13 +11,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-@AutoConfigureMockMvc
-@ContextConfiguration(classes = {SensorDataAddApi.class, SensorDataAddApiImpl.class})
-@WebMvcTest
 public class SensorDataAddApiTest {
 
-    @Autowired
-    private MockMvc mockMvc;
 
     @Nested
     @DisplayName("/addMetric/{sensorId}/{metricName}/{metricValue}")

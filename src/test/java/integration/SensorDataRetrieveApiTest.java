@@ -1,23 +1,10 @@
 package integration;
 
-import com.dara.restweathersensorapp.api.SensorDataRetrieveApi;
-import com.dara.restweathersensorapp.impl.SensorDataRetrieveApiImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
 
-@AutoConfigureMockMvc
-@ContextConfiguration(classes = {SensorDataRetrieveApi.class, SensorDataRetrieveApiImpl.class})
-@WebMvcTest
 public class SensorDataRetrieveApiTest {
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Nested
     @DisplayName("/sensors")

@@ -169,8 +169,29 @@ public class SensorDataRetrieveApiImplTest {
         }
 
         @Test
+        @Disabled("until TODO comment in SensorDataRetrieveApiImpl::getSensorData() is addressed")
         public void GIVEN_callWithMissingDateRange_WHEN_callExecuted_THEN_lastDataReturned() {
+            final Sensor sensorNY =
+                    sb.sensorId(12L).country("US").city("NY").weatherData(List.of(new WeatherData(LocalDateTime.now(), "wind-speed", 23.1)))
+                            .build();
+            final Sensor sensorNJ =
+                    sb.sensorId(13L).country("US").city("NJ").weatherData(List.of(new WeatherData(LocalDateTime.now(), "humidity", 60D),
+                            new WeatherData(LocalDateTime.now(), "humidity", 61D),
+                            new WeatherData(LocalDateTime.now(), "humidity", 62D),
+                            new WeatherData(LocalDateTime.now(), "humidity", 63D),
+                            new WeatherData(LocalDateTime.now(), "wind-speed", 25.1)
+                    )).build();
 
+            sensorRepository.save(sensorNY);
+            sensorRepository.save(sensorNJ);
+
+
+            final JSONObject sensorData = sensorDataRetrieveApi.getSensorData("12,13", null, "wind-speed");
+
+            assertEquals(2, sensorData.length());
+
+            assertEquals("25.1", sensorData.get("13-wind-speed"));
+            assertEquals("23.1", sensorData.get("13-wind-speed"));
         }
 
         @Test
