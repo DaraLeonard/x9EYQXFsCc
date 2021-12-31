@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Sensor {
@@ -19,13 +20,6 @@ public class Sensor {
 
     public Sensor() {
 
-    }
-
-    public Sensor(final Long sensorId, final String country, final String city) {
-        this.sensorId = sensorId;
-        this.country = country;
-        this.city = city;
-        weatherData = new ArrayList<>();
     }
 
     public Sensor(final SensorBuilder sensorBuilder) {
@@ -55,14 +49,12 @@ public class Sensor {
         return weatherData;
     }
 
-    @Override
-    public String toString() {
-        return "Sensor{" +
-                "sensorId=" + sensorId +
-                ", country='" + country + '\'' +
-                ", city='" + city + '\'' +
-                ", weatherData=" + weatherData +
-                '}';
+    public void setWeatherData(final List<WeatherData> weatherData) {
+        this.weatherData = weatherData;
+    }
+
+    @Override public int hashCode() {
+        return Objects.hash(sensorId, country, city, weatherData);
     }
 
     public static class SensorBuilder {

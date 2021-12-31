@@ -2,6 +2,7 @@ package com.dara.restweathersensorapp.data;
 
 import javax.persistence.Embeddable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Embeddable
 public class WeatherData {
@@ -24,24 +25,12 @@ public class WeatherData {
         return weatherMetricName;
     }
 
-    public void setWeatherMetricName(final String weatherMetricName) {
-        this.weatherMetricName = weatherMetricName;
-    }
-
     public Double getWeatherMetricValue() {
         return weatherMetricValue;
     }
 
-    public void setWeatherMetricValue(final Double weatherMetricValue) {
-        this.weatherMetricValue = weatherMetricValue;
-    }
-
     public LocalDateTime getWeatherMetricTime() {
         return weatherMetricTime;
-    }
-
-    public void setWeatherMetricTime(LocalDateTime weatherMetricTime) {
-        this.weatherMetricTime = weatherMetricTime;
     }
 
     @Override public String toString() {
