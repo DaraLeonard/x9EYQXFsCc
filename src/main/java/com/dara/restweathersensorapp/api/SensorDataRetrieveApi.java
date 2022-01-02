@@ -2,9 +2,9 @@ package com.dara.restweathersensorapp.api;
 
 import com.dara.restweathersensorapp.data.Sensor;
 import com.dara.restweathersensorapp.exception.SensorNotFoundException;
-import org.json.JSONObject;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -45,11 +45,11 @@ public interface SensorDataRetrieveApi {
      * @param sensorIds        the {@link Sensor} ID(s) the data is requested from
      * @param dateRange        an {@link Integer} representing the span of days the average weather data should be returned for
      * @param weatherAttribute the list of weather attributes for which the client is interested
-     * @return a {@link JSONObject} containing the requested data
+     * @return a {@link ResponseEntity} containing the requested data
      * @throws SensorNotFoundException if the supplied {@link Sensor} ID(s) is not registered
      */
     @GetMapping("/sensorData/{sensorIds}/{dateRange}/{weatherAttribute}")
-    JSONObject getSensorData(@PathVariable String sensorIds, @PathVariable Integer dateRange, @PathVariable String weatherAttribute)
+    ResponseEntity<?> getSensorData(@PathVariable String sensorIds, @PathVariable Integer dateRange, @PathVariable String weatherAttribute)
             throws SensorNotFoundException;
 
     /**
@@ -63,9 +63,9 @@ public interface SensorDataRetrieveApi {
      *
      * @param sensorIds        the {@link Sensor} ID(s) the data is requested from
      * @param weatherAttribute the list of weather attributes for which the client is interested
-     * @return a {@link JSONObject} containing the requested data
+     * @return a {@link ResponseEntity} containing the requested data
      * @throws SensorNotFoundException if the supplied {@link Sensor} ID(s) is not registered
      */
     @GetMapping("/sensorData/{sensorIds}/{weatherAttribute}")
-    JSONObject getSensorData(@PathVariable String sensorIds, @PathVariable String weatherAttribute) throws SensorNotFoundException;
+    ResponseEntity<?> getSensorData(@PathVariable String sensorIds, @PathVariable String weatherAttribute) throws SensorNotFoundException;
 }

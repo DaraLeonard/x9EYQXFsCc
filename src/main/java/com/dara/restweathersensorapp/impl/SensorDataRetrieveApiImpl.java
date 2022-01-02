@@ -10,6 +10,8 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.json.JSONObject;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,7 +53,7 @@ public class SensorDataRetrieveApiImpl implements SensorDataRetrieveApi {
     }
 
     @Override
-    public JSONObject getSensorData(final @PathVariable String sensorIds, final @PathVariable Integer dateRange,
+    public ResponseEntity<?> getSensorData(final @PathVariable String sensorIds, final @PathVariable Integer dateRange,
                                     final @PathVariable String weatherAttribute) {
         final Map<String, String> sensorDataMap = new HashMap<>();
         final Collection<EntityModel<Sensor>> sensorList = getSensorsBasedOnQuery(sensorIds);
@@ -85,11 +87,12 @@ public class SensorDataRetrieveApiImpl implements SensorDataRetrieveApi {
             });
         }
 
-        return new JSONObject(sensorDataMap);
+        return ResponseEntity.status(HttpStatus.OK).body(new JSONObject(sensorDataMap).toString());
+        //return new JSONObject(sensorDataMap);
     }
 
     @Override
-    public JSONObject getSensorData(final @PathVariable String sensorIds, final @PathVariable String weatherAttribute) {
+    public ResponseEntity<?> getSensorData(final @PathVariable String sensorIds, final @PathVariable String weatherAttribute) {
         return this.getSensorData(sensorIds, null, weatherAttribute);
     }
 

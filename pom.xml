@@ -97,8 +97,8 @@
                                 </rule>
                             </rules>
                             <excludes>
-                                <exclude>com/dara/restweathersensorapp/SensorRepository.class</exclude>
                                 <exclude>com/dara/restweathersensorapp/RestWeatherSensorAppApplication.class</exclude>
+                                <exclude>com/dara/restweathersensorapp/LoadDatabase.class</exclude>
                             </excludes>
                         </configuration>
                     </execution>

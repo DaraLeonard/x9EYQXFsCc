@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,13 +33,17 @@ public class SensorDataRetrieveApiImplTest {
         sensorDataRetrieveApi = new SensorDataRetrieveApiImpl(sensorRepository);
 
         final Sensor sensorA =
-                sb.sensorId(1L).country("IE").city("Mayo").weatherData(List.of(new WeatherData(LocalDateTime.MIN, "humidity", 90D))).build();
+                sb.sensorId(1L).country("IE").city("Mayo").weatherData(List.of(new WeatherData(LocalDateTime.MIN, "humidity", 90D)))
+                        .build();
         final Sensor sensorB =
-                sb.sensorId(2L).country("IE").city("Galway").weatherData(List.of(new WeatherData(LocalDateTime.MIN, "temperature", 33.1))).build();
+                sb.sensorId(2L).country("IE").city("Galway").weatherData(List.of(new WeatherData(LocalDateTime.MIN, "temperature", 33.1)))
+                        .build();
         final Sensor sensorC =
-                sb.sensorId(3L).country("IE").city("Cork").weatherData(List.of(new WeatherData(LocalDateTime.MIN, "humidity", 60D))).build();
+                sb.sensorId(3L).country("IE").city("Cork").weatherData(List.of(new WeatherData(LocalDateTime.MIN, "humidity", 60D)))
+                        .build();
         final Sensor sensorD =
-                sb.sensorId(4L).country("IE").city("Dublin").weatherData(List.of(new WeatherData(LocalDateTime.MIN, "wind-speed", 33.1))).build();
+                sb.sensorId(4L).country("IE").city("Dublin").weatherData(List.of(new WeatherData(LocalDateTime.MIN, "wind-speed", 33.1)))
+                        .build();
 
         sensorRepository.save(sensorA);
         sensorRepository.save(sensorB);
@@ -100,13 +105,10 @@ public class SensorDataRetrieveApiImplTest {
             sensorRepository.save(sensorNJ);
 
 
-            final JSONObject sensorData = sensorDataRetrieveApi.getSensorData("*", 5, "*");
+            final ResponseEntity<?> sensorData = sensorDataRetrieveApi.getSensorData("*", 5, "*");
 
-            assertEquals(3, sensorData.length());
-
-            assertEquals("23.1", sensorData.get("12-wind-speed"));
-            assertEquals("25.1", sensorData.get("13-wind-speed"));
-            assertEquals("61.5", sensorData.get("13-humidity"));
+            assertEquals(3, new JSONObject(sensorData.getBody()).length());
+            assertEquals("{\"12-wind-speed\":\"23.1\",\"13-wind-speed\":\"25.1\",\"13-humidity\":\"61.5\"}", sensorData.getBody());
         }
 
         @Test
@@ -126,13 +128,10 @@ public class SensorDataRetrieveApiImplTest {
             sensorRepository.save(sensorNJ);
 
 
-            final JSONObject sensorData = sensorDataRetrieveApi.getSensorData("12,13", 5, "*");
+            final ResponseEntity<?> sensorData = sensorDataRetrieveApi.getSensorData("12,13", 5, "*");
 
-            assertEquals(3, sensorData.length());
-
-            assertEquals("23.1", sensorData.get("12-wind-speed"));
-            assertEquals("25.1", sensorData.get("13-wind-speed"));
-            assertEquals("61.5", sensorData.get("13-humidity"));
+            assertEquals(3, new JSONObject(sensorData.getBody()).length());
+            assertEquals("{\"12-wind-speed\":\"23.1\",\"13-wind-speed\":\"25.1\",\"13-humidity\":\"61.5\"}", sensorData.getBody());
         }
 
         @Test
@@ -151,13 +150,10 @@ public class SensorDataRetrieveApiImplTest {
             sensorRepository.save(sensorNY);
             sensorRepository.save(sensorNJ);
 
+            final ResponseEntity<?> sensorData = sensorDataRetrieveApi.getSensorData("13", 5, "*");
 
-            final JSONObject sensorData = sensorDataRetrieveApi.getSensorData("13", 5, "*");
-
-            assertEquals(2, sensorData.length());
-
-            assertEquals("25.1", sensorData.get("13-wind-speed"));
-            assertEquals("61.5", sensorData.get("13-humidity"));
+            assertEquals(3, new JSONObject(sensorData.getBody()).length());
+            assertEquals("{\"13-wind-speed\":\"25.1\",\"13-humidity\":\"61.5\"}", sensorData.getBody());
         }
 
         @Test
@@ -185,13 +181,7 @@ public class SensorDataRetrieveApiImplTest {
             sensorRepository.save(sensorNY);
             sensorRepository.save(sensorNJ);
 
-
-            final JSONObject sensorData = sensorDataRetrieveApi.getSensorData("12,13", null, "wind-speed");
-
-            assertEquals(2, sensorData.length());
-
-            assertEquals("25.1", sensorData.get("13-wind-speed"));
-            assertEquals("23.1", sensorData.get("13-wind-speed"));
+            sensorDataRetrieveApi.getSensorData("12,13", null, "wind-speed");
         }
 
         @Test
@@ -211,12 +201,10 @@ public class SensorDataRetrieveApiImplTest {
             sensorRepository.save(sensorNJ);
 
 
-            final JSONObject sensorData = sensorDataRetrieveApi.getSensorData("12,13", 5, "wind-speed");
+            final ResponseEntity<?> sensorData = sensorDataRetrieveApi.getSensorData("12,13", 5, "wind-speed");
 
-            assertEquals(2, sensorData.length());
-
-            assertEquals("23.1", sensorData.get("12-wind-speed"));
-            assertEquals("25.1", sensorData.get("13-wind-speed"));
+            assertEquals(3, new JSONObject(sensorData.getBody()).length());
+            assertEquals("{\"12-wind-speed\":\"23.1\",\"13-wind-speed\":\"25.1\"}", sensorData.getBody());
         }
     }
 }
